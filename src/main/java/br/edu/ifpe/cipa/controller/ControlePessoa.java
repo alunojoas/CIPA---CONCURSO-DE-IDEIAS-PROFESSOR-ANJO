@@ -14,27 +14,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpe.cipa.dao.PessoaDao;
+//import br.edu.ifpe.cipa.dao.PessoaDao;
 import br.edu.ifpe.cipa.model.Pessoa;
-//import br.edu.ifpe.cipa.service.PessoaService;
+import br.edu.ifpe.cipa.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
 public class ControlePessoa {
 	
-	PessoaDao pessoadao = new PessoaDao();
+	PessoaService pessoaservice = new PessoaService();
+	
+//	PessoaDao pessoadao = new PessoaDao();
 	
 	@GetMapping("")
 	public List<Pessoa> list(){
 		
 		
-		return pessoadao.listar();
+		return pessoaservice.listar();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Pessoa> consultarPessoaPorId(@PathVariable Integer id){
 		try {
-			return new ResponseEntity<Pessoa>(pessoadao.listar().get(id), HttpStatus.OK);
+			return new ResponseEntity<Pessoa>(pessoaservice.listar().get(id), HttpStatus.OK);
 		}catch(NoSuchElementException e) {
 			return new ResponseEntity<Pessoa>(HttpStatus.NOT_FOUND);
 		}
@@ -42,17 +44,17 @@ public class ControlePessoa {
 	
 	@PostMapping("/")
 	public void add(@RequestBody Pessoa pessoa) {
-		pessoadao.inserir(pessoa);
+		pessoaservice.inserir(pessoa);
 	}
 	
 	@DeleteMapping("/r/{id}")
 	public void remove(@PathVariable Integer id) {
-		pessoadao.remover(id);
+		pessoaservice.remover(id);
 	}
 	
 	@PutMapping("/u")
 	public void update(@RequestBody Pessoa pessoa) {
-		pessoadao.alterar(pessoa);
+		pessoaservice.alterar(pessoa);
 	}
 
 
